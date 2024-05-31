@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from algorithms.alberti import alberti
 from waitress import serve
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static/")
 
 @app.route('/')
 def main_page():
@@ -41,4 +41,4 @@ def process_data():
     return jsonify(result)
 
 if __name__ == '__main__':
-    serve(app, host="0.0.0.0", port=8081)
+    serve(app, host="0.0.0.0", port=8080)

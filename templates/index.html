@@ -3,13 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css') }}" />
     <title>Alberti circle</title>
   </head>
   <body>
-    <form id="myForm">
-    <h2>Выберите режим:</h2>
-    
+    <form id="cipher">
+      <h2>Выберите режим:</h2>
+
       <input type="radio" name="mode" value="1" id="mode1Radio" />
       Режим 1<br />
       <input type="radio" name="mode" value="2" id="mode2Radio" />
@@ -20,160 +21,47 @@
       Режим 4<br />
       <input type="radio" name="mode" value="5" id="mode5Radio" />
       Режим 5<br />
-    
 
-    <div id="textinput" style="display: block">
-      <label for="ciphertext">Шифр-текст:</label> <br />
-      <textarea name="ciphertext" cols="20" rows="4"></textarea>
-    </div>
-    <div id="keyinput" style="display: block">
-      <label for="key">Ключ:</label>
-      <br />
-      <input type="radio" id="keychoose1" name="keychoose" checked />
-      <label for="key">Стандартный ключ (семинарский):</label> <br />
-      <textarea name="keyinput1" cols="20" rows="2" readonly>КФЭНИЬСЯАТУБЫЛРВЩГЪДЕМЙЦПЧЖЮШЗОХ</textarea>
-      <br />
+      <div id="textinput" style="display: block">
+        <label for="ciphertext">Шифр-текст:</label> <br />
+        <textarea name="ciphertext" cols="20" rows="4"></textarea>
+      </div>
+      <div id="keyinput" style="display: block">
+        <label for="key">Ключ:</label>
+        <br />
+        <input type="radio" id="keychoose1" name="keychoose" checked />
+        <label for="key">Стандартный ключ (семинарский):</label> <br />
+        <textarea name="keyinput1" cols="20" rows="2" readonly>
+          КФЭНИЬСЯАТУБЫЛРВЩГЪДЕМЙЦПЧЖЮШЗОХ
+        </textarea>
+        <br />
 
-      <input type="radio" id="keychoose2" name="keychoose" />
-      <label for="key">Написать свой ключ:</label> <br />
-      <textarea name="keyinput2" cols="20" rows="2"></textarea>
-    </div>
+        <input type="radio" id="keychoose2" name="keychoose" />
+        <label for="key">Написать свой ключ:</label> <br />
+        <textarea name="keyinput2" cols="20" rows="2"></textarea>
+      </div>
 
-    <div id="passinput" style="display: none">
-      <label for="password">Пароль:</label> <br />
-      <input type="text" id="password" name="password" /><br />
-    </div>
+      <div id="passinput" style="display: none">
+        <label for="password">Пароль:</label> <br />
+        <input type="text" id="password" name="password" /><br />
+      </div>
 
-    <div id="indicatorinput" style="display: none">
-      <label for="password"
-        >Индикаторная буква (оставьте пустой, чтобы получить все
-        варианты):</label
-      >
-      <br />
-      <input type="text" id="indicator" name="indicator" /><br />
-    </div>
+      <div id="indicatorinput" style="display: none">
+        <label for="password"
+          >Индикаторная буква (оставьте пустой, чтобы получить все
+          варианты):</label
+        >
+        <br />
+        <input type="text" id="indicator" name="indicator" /><br />
+      </div>
 
-    <button type="submit">Отправить</button>
+      <button type="submit">Отправить</button>
     </form>
 
-    <script>
-        const myForm = document.getElementById('myForm');
-      
-        myForm.addEventListener('submit', async (event) => {
-          event.preventDefault(); // Предотвращаем стандартное действие отправки формы
-      
-          const formData = new FormData(myForm);
-          const formObj = Object.fromEntries(formData.entries());
-          const keychoose2 = document.getElementById("keychoose2");
-
-          delete formObj.keychoose
-
-          if (!keychoose2.checked){
-              delete formObj.keyinput2
-          }
-      
-          const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formObj)
-          };
-          response = NaN;
-          try {
-            response = await fetch('/mode/', requestOptions);
-            response = await response.json();
-            
-          } catch (error) {
-            console.error('Ошибка:', error);
-          }
-          
-          const resultDiv = document.createElement('div');
-          resultDiv.innerHTML = `
-          <h2>Результат запроса:</h2>
-          <p><strong>Шифр-текст:</strong> ${response.ciphertext}</p>
-          <p><strong>Ключ:</strong> ${response.key}</p>
-          <p><strong>Пароль:</strong> ${response.password}</p>
-          <p><strong>Индикаторная буква:</strong> ${response.indicator}</p>
-          <p><strong>Результат:</strong> ${response.plaintext} </p>
-        `;
-        document.body.appendChild(resultDiv);
-        });
-      </script>
-
-    <script>
-      const textinput = document.getElementById("textinput");
-      const keyinput = document.getElementById("keyinput");
-      const passinput = document.getElementById("passinput");
-      const indicatorinput = document.getElementById("indicatorinput");
-
-      const mode1Radio = document.getElementById("mode1Radio");
-      const mode2Radio = document.getElementById("mode2Radio");
-      const mode3Radio = document.getElementById("mode3Radio");
-      const mode4Radio = document.getElementById("mode4Radio");
-      const mode5Radio = document.getElementById("mode5Radio");
-
-      mode1Radio.addEventListener("change", () => {
-        if (mode1Radio.checked) {
-          textinput.style.display = "block";
-          keyinput.style.display = "block";
-          passinput.style.display = "none";
-          indicatorinput.style.display = "none";
-        }
-      });
-
-      mode2Radio.addEventListener("change", () => {
-        if (mode2Radio.checked) {
-          textinput.style.display = "block";
-          keyinput.style.display = "block";
-          passinput.style.display = "none";
-          indicatorinput.style.display = "none";
-        }
-      });
-
-      mode3Radio.addEventListener("change", () => {
-        if (mode3Radio.checked) {
-          textinput.style.display = "block";
-          keyinput.style.display = "block";
-          passinput.style.display = "none";
-          indicatorinput.style.display = "block";
-        }
-      });
-
-      mode4Radio.addEventListener("change", () => {
-        if (mode4Radio.checked) {
-          textinput.style.display = "block";
-          keyinput.style.display = "block";
-          passinput.style.display = "none";
-          indicatorinput.style.display = "none";
-        }
-      });
-
-      mode5Radio.addEventListener("change", () => {
-        if (mode5Radio.checked) {
-          textinput.style.display = "block";
-          keyinput.style.display = "block";
-          passinput.style.display = "block";
-          indicatorinput.style.display = "none";
-        }
-      });
-
-      const keychoose1 = document.getElementById("keychoose1");
-      const keychoose2 = document.getElementById("keychoose2");
-      const keyinput1 = document.getElementById("keyinput1");
-      const keyinput2 = document.getElementById("keyinput2");
-
-      keychoose1.addEventListener("change", () => {
-        if (keychoose1.checked) {
-          keyinput2.disabled = true;
-
-        }
-      });
-
-      keychoose2.addEventListener("change", () => {
-        if (keychoose2.checked) {
-            keyinput2.disabled = false;
-            keyinput2.focus()
-        }
-      });
-    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static',filename='js/formHandler.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/animations.js') }}"></script>
   </body>
 </html>

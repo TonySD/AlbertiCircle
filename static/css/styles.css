@@ -2,3 +2,7 @@ ol {
     font-weight: bolder;
     font-size: large;
 }
+
+body {
+    background-color: white; 
+}

@@ -21,3 +21,5 @@ MODE5_PLAIN = "ЦАРЬ"
 MODE5_CIPHER = "ИЕИР"
 
 MODE5_MIN_LEN_SEQ = 5
+
+ALPHABET = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
