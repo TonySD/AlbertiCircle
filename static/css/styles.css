@@ -6,3 +6,26 @@ ol {
 body {
     background-color: white; 
 }
+
+#cipher {
+    margin-top: 5%;
+    background-color: rgb(182, 182, 182);
+    border-radius: 15px;
+}
+
+.formTitle {
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submitButton {
+    padding-bottom: 15px;
+    margin-top: 15px;
+}
+
+.cipherForm {
+    padding-left: 15px;
+    padding-right: 15px;
+}

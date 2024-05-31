@@ -3,60 +3,87 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/styles.css') }}" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static',filename='css/styles.css') }}"
+    />
     <title>Alberti circle</title>
   </head>
   <body>
-    <form id="cipher">
-      <h2>Выберите режим:</h2>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8">
+        <form id="cipher" class="cipherForm">
+          <div class="formTitle">
+            <h2>Выберите режим:</h2>
+          </div>
+          <input type="radio" name="mode" value="1" id="mode1Radio" />
+          Режим 1<br />
+          <input type="radio" name="mode" value="2" id="mode2Radio" />
+          Режим 2<br />
+          <input type="radio" name="mode" value="3" id="mode3Radio" />
+          Режим 3<br />
+          <input type="radio" name="mode" value="4" id="mode4Radio" />
+          Режим 4<br />
+          <input type="radio" name="mode" value="5" id="mode5Radio" />
+          Режим 5<br />
 
-      <input type="radio" name="mode" value="1" id="mode1Radio" />
-      Режим 1<br />
-      <input type="radio" name="mode" value="2" id="mode2Radio" />
-      Режим 2<br />
-      <input type="radio" name="mode" value="3" id="mode3Radio" />
-      Режим 3<br />
-      <input type="radio" name="mode" value="4" id="mode4Radio" />
-      Режим 4<br />
-      <input type="radio" name="mode" value="5" id="mode5Radio" />
-      Режим 5<br />
+          <div id="textinput" style="display: none">
+            <label for="ciphertext">Шифр-текст:</label> <br />
+            <textarea name="ciphertext" cols="20" rows="4"></textarea>
+          </div>
+          <div id="keyinput" style="display: none">
+            <label for="key">Ключ:</label>
+            <br />
+            <input
+              type="radio"
+              id="keychoose1_btn"
+              name="keychoose"
+              value="0"
+              checked
+            />
+            <label for="keyinput1">Стандартный ключ (семинарский):</label>
+            <br />
+            <textarea id="keyinput1" cols="20" rows="2" readonly>
+КФЭНИЬСЯАТУБЫЛРВЩГЪДЕМЙЦПЧЖЮШЗОХ</textarea
+            >
+            <br />
 
-      <div id="textinput" style="display: block">
-        <label for="ciphertext">Шифр-текст:</label> <br />
-        <textarea name="ciphertext" cols="20" rows="4"></textarea>
+            <input
+              type="radio"
+              id="keychoose2_btn"
+              name="keychoose"
+              value="1"
+            />
+            <label for="keyinput2">Написать свой ключ:</label> <br />
+            <textarea id="keyinput2" cols="20" rows="2"></textarea>
+          </div>
+
+          <div id="passinput" style="display: none">
+            <label for="password">Пароль:</label> <br />
+            <input type="text" id="password" name="password" /><br />
+          </div>
+
+          <div id="indicatorinput" style="display: none">
+            <label for="password"
+              >Индикаторная буква (оставьте пустой, чтобы получить все
+              варианты):</label
+            >
+            <br />
+            <input type="text" id="indicator" name="indicator" /><br />
+          </div>
+          
+          <div class="submitButton">
+            <button type="submit">Отправить</button>
+          </div>
+        </form>
       </div>
-      <div id="keyinput" style="display: block">
-        <label for="key">Ключ:</label>
-        <br />
-        <input type="radio" id="keychoose1" name="keychoose" checked />
-        <label for="key">Стандартный ключ (семинарский):</label> <br />
-        <textarea name="keyinput1" cols="20" rows="2" readonly>
-          КФЭНИЬСЯАТУБЫЛРВЩГЪДЕМЙЦПЧЖЮШЗОХ
-        </textarea>
-        <br />
-
-        <input type="radio" id="keychoose2" name="keychoose" />
-        <label for="key">Написать свой ключ:</label> <br />
-        <textarea name="keyinput2" cols="20" rows="2"></textarea>
-      </div>
-
-      <div id="passinput" style="display: none">
-        <label for="password">Пароль:</label> <br />
-        <input type="text" id="password" name="password" /><br />
-      </div>
-
-      <div id="indicatorinput" style="display: none">
-        <label for="password"
-          >Индикаторная буква (оставьте пустой, чтобы получить все
-          варианты):</label
-        >
-        <br />
-        <input type="text" id="indicator" name="indicator" /><br />
-      </div>
-
-      <button type="submit">Отправить</button>
-    </form>
+      <div class="col-2"></div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
