@@ -21,17 +21,38 @@
           <div class="formTitle">
             <h2>Выберите режим:</h2>
           </div>
-          <input type="radio" name="mode" value="1" id="mode1Radio" />
-          Режим 1<br />
-          <input type="radio" name="mode" value="2" id="mode2Radio" />
-          Режим 2<br />
-          <input type="radio" name="mode" value="3" id="mode3Radio" />
-          Режим 3<br />
-          <input type="radio" name="mode" value="4" id="mode4Radio" />
-          Режим 4<br />
-          <input type="radio" name="mode" value="5" id="mode5Radio" />
-          Режим 5<br />
-
+          <div class="container">
+            <div class="row">
+            <div class="col-4">
+              <input type="radio" name="mode" value="1" id="mode1Radio" />
+              Режим 1<br />
+              <input type="radio" name="mode" value="2" id="mode2Radio" />
+              Режим 2<br />
+              <input type="radio" name="mode" value="3" id="mode3Radio" />
+              Режим 3<br />
+              <input type="radio" name="mode" value="4" id="mode4Radio" />
+              Режим 4<br />
+              <input type="radio" name="mode" value="5" id="mode5Radio" />
+              Режим 5<br />
+            </div>
+            <div class="col-8">
+              <input
+                type="radio"
+                name="encrypt_mode"
+                value="0"
+                id="mode1Cipher"
+              />
+              Зашифровать<br />
+              <input
+                type="radio"
+                name="encrypt_mode"
+                value="1"
+                id="mode2Cipher"
+              />
+              Расшифровать<br />
+            </div>
+          </div>
+          </div>
           <div id="textinput" style="display: none">
             <label for="ciphertext">Шифр-текст:</label> <br />
             <textarea name="ciphertext" cols="20" rows="4"></textarea>
@@ -76,9 +97,12 @@
             <br />
             <input type="text" id="indicator" name="indicator" /><br />
           </div>
-          
-          <div class="submitButton">
-            <button type="submit">Отправить</button>
+          <div class="row">
+            <div class="col-3"></div>
+            <div class="submitButton col-6">
+              <button type="submit" class="myButton">Отправить</button>
+            </div>
+            <div class="col-3"></div>
           </div>
         </form>
       </div>

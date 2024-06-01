@@ -23,6 +23,23 @@ body {
 .submitButton {
     padding-bottom: 15px;
     margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.myButton {
+    border: none;
+    border-radius: 10px;
+    width: 150px;
+    height: 50px;
+    background-color:rgb(136, 61, 206);
+    color: whitesmoke;
+    font-weight: bold;
+}
+
+.myButton:hover {
+    background-color: rgb(126, 36, 211);
 }
 
 .cipherForm {
