@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from algorithms.alberti import alberti
 from waitress import serve
+from config import *
 
 app = Flask(__name__, static_folder="static/")
 
@@ -11,13 +12,8 @@ def main_page():
 @app.route('/mode/', methods=['POST'])
 def process_data():
     data = request.get_json()
-    result = {"ciphertext": data['ciphertext'].upper(), "key": "", "password": "", "indicator": "", "plaintext": ""}
-    print(data)
-    if "keyinput2" not in data.keys():
-        result["key"] = data["keyinput1"]
-    else:
-        result["key"] = data["keyinput2"].upper()
-    print(result)
+    result = {"ciphertext": data['ciphertext'].upper(), "key": data["key"], "password": "", "indicator": "", "plaintext": ""}
+    logging.debug(f"Got json: {data}")
 
     if data['mode'] == '1':
         result['plaintext'] = alberti.mode1(result['ciphertext'], result['key'])
@@ -37,7 +33,7 @@ def process_data():
             result['plaintext'] = alberti.mode5(data['ciphertext'], result['key'], data['password'])
         else:
             result['plaintext'] = alberti.mode5(data['ciphertext'], result['key'])
-    print(result)
+    logging.debug(f"Processed response: {result}")
     return jsonify(result)
 
 if __name__ == '__main__':
