@@ -22,25 +22,65 @@ def basic_decrypt_text(text: str, key: str):
         key = rotate_key(key)
     return ''.join(result)
 
+def basic_encrypt_text(text: str, key: str):
+    result = list()
+    for char in text:
+        result.append(
+            encrypt(char, key)
+        )
+        key = rotate_key(key)
+    return ''.join(result)
+
 # MODE 1
-def mode1(text: str, key: str):
-    while key[0] != text[0]:
+def decrypt_mode1(text: str, key: str):
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
+    first_letter_index = ALPHABET.find(text[0])
+    while key[first_letter_index] != text[0]:
         key = rotate_key(key)
 
     return basic_decrypt_text(text, key)
+
+
+def encrypt_mode1(text: str, key: str):
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
+    first_letter_index = ALPHABET.find(text[0])
+    while key[first_letter_index] != text[0]:
+        key = rotate_key(key)
+
+    return basic_encrypt_text(text, key)
 
 # MODE 2
-def mode2(text: str, key: str):
-    while decrypt(decrypt(text[0], key), key) != ALPHABET[0]:
+def decrypt_mode2(text: str, key: str):
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
+    keys = set()
+    for _ in range(len(ALPHABET)):
+        if decrypt(decrypt(text[0], key), key) == ALPHABET[0]:
+            keys.add(key)
         key = rotate_key(key)
-    
-    return basic_decrypt_text(text, key)
+
+    return [basic_decrypt_text(text, key) for key in keys]
+
+
+def encrypt_mode2(text: str, key: str):
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
+    while key.find(text[0]) != ALPHABET.find('А'):
+        key = rotate_key(key)
+
+    return basic_encrypt_text(text, key)
 
 # MODE 3
 # If indicator letter not specified - return all variations. Choose one and specify to decrypt
-def mode3(text: str, key: str, indicator_letter = None) -> str | List[str]:
+def decrypt_mode3(text: str, key: str, indicator_letter=None) -> str | List[str]:
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
     if indicator_letter is not None:
-        #     key.find(indicator_letter) != 0
+        if indicator_letter not in ALPHABET:
+            raise ValueError("Индекаторной буквы нет в алфавите")
+
         while key.find(indicator_letter) != ALPHABET.find('А'):
             key = rotate_key(key)
 
@@ -54,18 +94,53 @@ def mode3(text: str, key: str, indicator_letter = None) -> str | List[str]:
         result.append(f"[{current_key[0]}] {basic_decrypt_text(text, current_key)}")
     return result
 
+
+def encrypt_mode3(text: str, key: str, indicator_letter: str):
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
+    if indicator_letter not in ALPHABET:
+        raise ValueError("Индекаторной буквы нет в алфавите")
+
+    while key.find(indicator_letter) != ALPHABET.find('А'):
+        key = rotate_key(key)
+
+    return basic_encrypt_text(text, key)
+
 # MODE 4
-def mode4(text: str, key: str):
+def decrypt_mode4(text: str, key: str):
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
     result = list()
     for char in text:
         # if char uppercase - change keys
         if char in ALPHABET:
             while key.find(char) != 0: key = rotate_key(key)
             continue
-        
+
         result.append(decrypt(
             char.upper(), key
         ))
+    return ''.join(result)
+
+def encrypt_mode4(text: str, key: str, subseq_len: int = 5):
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
+    result = list()
+    subseqes = [text[d:d + subseq_len] for d in range(0, len(text), 5)]
+
+    for subseq in subseqes:
+        indicator_letter = choices(text, k=1)[0]
+        result.append(
+            indicator_letter
+        )
+
+        while key.find(indicator_letter) != ALPHABET.find('А'):
+            key = rotate_key(key)
+
+        for char in subseq:
+            result.append(
+                encrypt(char, key).lower()
+            )
     return ''.join(result)
 
 def find_tallest_substr(text: str, index: int, length: int):
@@ -110,29 +185,34 @@ def split_to_delims(number: int):
 
     return delimiters
 
-def encrypt_mode_5(text: str, key: str, password: str):
+def encrypt_mode5(text: str, key: str, password: str):
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
     encrypted = list()
     for i in range(len(text)):
         while key.find(password[i % len(password)]) != 0:
             key = rotate_key(key)
-        
+
         encrypted.append(
             encrypt(text[i], key)
         )
     return "".join(encrypted)
 
-def mode5(text: str, key: str, password = None) -> str | List[int]:
+
+def decrypt_mode5(text: str, key: str, password=None) -> str | List[int]:
+    if len(key) != len(ALPHABET):
+        raise IndexError("Длина ключа не совпадает с длиной алфавита")
     if password is not None:
         result = list()
         for i in range(len(text)):
             while key.find(password[i % len(password)]) != 0:
                 key = rotate_key(key)
-            
-            result.append( 
+
+            result.append(
                 decrypt(text[i], key)
             )
         return ''.join(result)
-    
+
     # Without spaces
     mono_text = text.replace(' ', '')
 
@@ -152,25 +232,26 @@ def mode5(text: str, key: str, password = None) -> str | List[int]:
             sequences_delimiters = sequences_delimiters.intersection(delims[i])
 
     return sorted(list(sequences_delimiters))
+
              
 
 if ENABLE_TESTS:
-    assert mode1(MODE1_CIPHER, LECTION_KEY) == MODE1_PLAIN
+    assert decrypt_mode1(MODE1_CIPHER, LECTION_KEY) == MODE1_PLAIN
 
-    assert mode2(MODE2_CIPHER, LECTION_KEY) == MODE2_PLAIN
+    assert decrypt_mode2(MODE2_CIPHER, LECTION_KEY) == MODE2_PLAIN
     # Broot test
-    assert any([MODE3_PLAIN in mode for mode in mode3(MODE3_CIPHER, LECTION_KEY)])
+    assert any([MODE3_PLAIN in mode for mode in decrypt_mode3(MODE3_CIPHER, LECTION_KEY)])
     # Indicator letter test
-    assert mode3(MODE3_CIPHER, LECTION_KEY, 'Х') == MODE3_PLAIN
+    assert decrypt_mode3(MODE3_CIPHER, LECTION_KEY, 'Х') == MODE3_PLAIN
 
-    assert mode4(MODE4_CIPHER, LECTION_KEY) == MODE4_PLAIN
+    assert decrypt_mode4(MODE4_CIPHER, LECTION_KEY) == MODE4_PLAIN
     
-    assert mode5(MODE5_CIPHER, LECTION_KEY, MODE5_PASSWORD) == MODE5_PLAIN
+    assert decrypt_mode5(MODE5_CIPHER, LECTION_KEY, MODE5_PASSWORD) == MODE5_PLAIN
 
     # Kasiski
     text = "Криптография - это область науки, посвященная защите информации от несанкционированного доступа путем преобразования ее в нечитаемую форму. Она использует различные методы и алгоритмы для шифрования данных таким образом, чтобы только авторизованные пользователи могли получить к ним доступ. Криптография играет ключевую роль в обеспечении безопасности информации в сети Интернет, банковской сфере, государственных организациях и других сферах, где важна конфиденциальность данных. С развитием криптографических методов также возрастает уровень защиты, что помогает предотвращать кибератаки и сохранять конфиденциальность коммуникаций."
     text = text.replace('.', '').replace('-', '').replace(',', '').replace(' ', '').upper()
     key = "МОЙКЛЮЧИ"
-    encrypted = encrypt_mode_5(text, LECTION_KEY, key)
-    assert len(key) in mode5(encrypted, LECTION_KEY)
+    encrypted = encrypt_mode5(text, LECTION_KEY, key)
+    assert len(key) in decrypt_mode5(encrypted, LECTION_KEY)
 
