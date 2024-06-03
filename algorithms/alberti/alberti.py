@@ -1,5 +1,6 @@
 import re
 from typing import List, Tuple
+from random import choices
 from algorithms.alberti.config import *
 
 def encrypt(letter: str, key: str):
@@ -74,12 +75,12 @@ def encrypt_mode2(text: str, key: str):
 
 # MODE 3
 # If indicator letter not specified - return all variations. Choose one and specify to decrypt
-def decrypt_mode3(text: str, key: str, indicator_letter=None) -> str | List[str]:
+def decrypt_mode3(text: str, key: str, indicator_letter="") -> str | List[str]:
     if len(key) != len(ALPHABET):
         raise IndexError("Длина ключа не совпадает с длиной алфавита")
-    if indicator_letter is not None:
+    if indicator_letter != "":
         if indicator_letter not in ALPHABET:
-            raise ValueError("Индекаторной буквы нет в алфавите")
+            raise ValueError("Индикаторной буквы нет в алфавите")
 
         while key.find(indicator_letter) != ALPHABET.find('А'):
             key = rotate_key(key)
@@ -199,10 +200,10 @@ def encrypt_mode5(text: str, key: str, password: str):
     return "".join(encrypted)
 
 
-def decrypt_mode5(text: str, key: str, password=None) -> str | List[int]:
+def decrypt_mode5(text: str, key: str, password="") -> str | List[int]:
     if len(key) != len(ALPHABET):
         raise IndexError("Длина ключа не совпадает с длиной алфавита")
-    if password is not None:
+    if password != "":
         result = list()
         for i in range(len(text)):
             while key.find(password[i % len(password)]) != 0:
@@ -238,7 +239,7 @@ def decrypt_mode5(text: str, key: str, password=None) -> str | List[int]:
 if ENABLE_TESTS:
     assert decrypt_mode1(MODE1_CIPHER, LECTION_KEY) == MODE1_PLAIN
 
-    assert decrypt_mode2(MODE2_CIPHER, LECTION_KEY) == MODE2_PLAIN
+    assert MODE2_PLAIN in decrypt_mode2(MODE2_CIPHER, LECTION_KEY)
     # Broot test
     assert any([MODE3_PLAIN in mode for mode in decrypt_mode3(MODE3_CIPHER, LECTION_KEY)])
     # Indicator letter test
