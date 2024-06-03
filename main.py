@@ -23,14 +23,14 @@ def process_data():
     if int(data['mode']) - 1 >= len(MODES):
         return error("Not valid mode")
     
-    current_mode = MODES[int(data['mode'])]
+    current_mode = MODES[int(data['mode']) - 1]
 
     if data['encrypt_mode'] == '0':
         result = current_mode.encrypt(data)
     elif data['encrypt_mode'] == '1':
         result = current_mode.decrypt(data)
     else:
-        return error("Not valid ecnrypt_mode")
+        return error("Not valid encrypt_mode")
     
     logging.debug(f"Processed response: {result}")
     return jsonify(result)

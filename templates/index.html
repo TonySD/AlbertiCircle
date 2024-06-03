@@ -24,7 +24,7 @@
           <div class="container">
             <div class="row">
             <div class="col-4">
-              <input type="radio" name="mode" value="1" id="mode1Radio" />
+              <input type="radio" name="mode" value="1" id="mode1Radio" checked />
               Режим 1<br />
               <input type="radio" name="mode" value="2" id="mode2Radio" />
               Режим 2<br />
@@ -41,6 +41,7 @@
                 name="encrypt_mode"
                 value="0"
                 id="mode1Cipher"
+                checked
               />
               Зашифровать<br />
               <input
@@ -53,11 +54,11 @@
             </div>
           </div>
           </div>
-          <div id="textinput" style="display: none">
+          <div id="textinput" style="display: block">
             <label for="ciphertext">Шифр-текст:</label> <br />
             <textarea name="ciphertext" cols="20" rows="4"></textarea>
           </div>
-          <div id="keyinput" style="display: none">
+          <div id="keyinput" style="display: block">
             <label for="key">Ключ:</label>
             <br />
             <input

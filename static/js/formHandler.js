@@ -39,12 +39,17 @@ myForm.addEventListener("submit", async (event) => {
 
   const resultDiv = document.createElement("div");
   resultDiv.innerHTML = `
-    <h2>Результат запроса:</h2>
-    <p><strong>Шифр-текст:</strong> ${response.ciphertext}</p>
-    <p><strong>Ключ:</strong> ${response.key}</p>
-    <p><strong>Пароль:</strong> ${response.password}</p>
-    <p><strong>Индикаторная буква:</strong> ${response.indicator}</p>
-    <p><strong>Результат:</strong> ${response.plaintext} </p>
-`;
+  <div class="row">
+      <div class="col-4"></div>
+      <div class="col-4 response">
+        <h2>Результат запроса:</h2>
+        <p><strong>Шифр-текст:</strong> ${response.ciphertext} </p>
+        <p><strong>Ключ:</strong> ${response.key} </p>
+        <p><strong>Пароль:</strong> ${response.password} </p>
+        <p><strong>Индикаторная буква:</strong> ${response.indicator} </p>
+        <p><strong>Результат:</strong> ${response.plaintext} </p>
+      </div>
+      <div class="col-4"></div>
+    </div>`;
   document.body.appendChild(resultDiv);
 });
