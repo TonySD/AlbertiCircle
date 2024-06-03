@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  site:
+    image: site_image
+    build: .
+  ports:
+      - 80:8080
